@@ -1,4 +1,4 @@
-use smeagol
+use smeagol;
 -- Table role
 INSERT INTO role (type,description) VALUE("admin","Admin User"); 
 INSERT INTO role (type,description) VALUE("editor","User with rol of editor"); 
@@ -21,5 +21,3 @@ VALUES(NULL,2,"Smeagol primer CMS en ZF2","haber si funca","/noticias/smeagol-pr
 
 INSERT INTO node (id,node_type_id,title,content,url,user_id,created) 
 VALUES(NULL,2,"El mundial Brasil 2014 esta que quema","ELl mundial esta super emocionante","/noticias/mundialsuper-emocionante",1,NOW());
--- -----------------------------------------------------------------------------------------------
-https://github.com/gmanuelrey/smeagol.git
