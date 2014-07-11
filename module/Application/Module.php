@@ -30,16 +30,16 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         $eventManager->attach('route', function($e) {
-                // verificando si el usuario esta logueado
-        	$auth = new AuthenticationService();
-        	$is_login=false;
-        	if (!$auth->hasIdentity()) {
-        		$is_login=true;
-        	}
+            // verificando si el usuario esta logueado
+            $auth = new AuthenticationService();
+            $is_login = false;
+            if (!$auth->hasIdentity()) {
+                $is_login = true;
+            }
             // decide which theme to use by get parameter
             $layout = 'enterprise/layout';
             $e->getViewModel()->setTemplate($layout);
-            $e->getViewModel()->setVariable("is_login",$is_login);
+            $e->getViewModel()->setVariable("is_login", $is_login);
         });
     }
 

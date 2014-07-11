@@ -32,5 +32,9 @@ class IndexController extends AbstractActionController {
         }
         return $this->nodeTable;
     }
+     public function holaAction()
+    {
+        return new ViewModel();
+    }
 
 }
