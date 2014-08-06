@@ -16,7 +16,7 @@ use Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController {
 
     // agregamos este atributo
-    protected $nodeTable;
+    protected $nodeTable; 
 
     public function indexAction() {
         return new ViewModel(array(
