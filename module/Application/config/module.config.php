@@ -20,16 +20,6 @@ return array(
                     ),
                 ),
             ),
-            'auth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/auth',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Auth',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
             'logout' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -40,35 +30,60 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'application' => array(
-                'type' => 'Literal',
+            'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/application',
+                    'route' => '/login',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller' => 'Index',
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'login',
+                    ),
+                ),
+            ),
+            'auth' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/auth[/:action]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
                         'action' => 'index',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
+            ),
+            // Soap server for node operations
+            'soap' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/soap[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Soap',
+                        'action' => 'index',
                     ),
                 ),
+            ),
+            //Alias de Urls
+            'node' => array(
+                'type' => 'Application\Router\Alias',
+                'options' => array(
+                    'route' => '/node[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Index',
+                        'action' => 'node',
+                        'id' => '0'
+                    ),
+                ),
+                'may_terminate' => true,
             ),
         ),
     ),
@@ -79,6 +94,9 @@ return array(
         ),
         'aliases' => array(
             'translator' => 'MvcTranslator',
+        ),
+        'factories' => array(
+            'primary_menus' => 'Application\Navigation\Service\PrimaryMenus',
         ),
     ),
     'translator' => array(
@@ -95,6 +113,8 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Auth' => 'Application\Controller\AuthController',
+            'Application\Router\Alias' => 'Application\Router\Alias',
+            'Application\Controller\Soap' => 'Application\Controller\SoapController',
         ),
     ),
     'view_manager' => array(
@@ -106,7 +126,6 @@ return array(
         'template_map' => array(
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'application/index/hola' => __DIR__ . '/../view/application/index/hola.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),
@@ -131,6 +150,7 @@ return array(
                 'themes/enterprise/js/jquery.jcarousel.js' => __DIR__ . '/../../../themes/enterprise/js/jquery.jcarousel.js',
                 'themes/enterprise/js/jquery.pngFix.js' => __DIR__ . '/../../../themes/enterprise/js/jquery.pngFix.js',
                 'themes/enterprise/js/js-fnc.js' => __DIR__ . '/../../../themes/enterprise/js/js-fnc.js',
+                'js/login.js' => __DIR__ . '/../public/login.js',
             ),
         ),
         'caching' => array(

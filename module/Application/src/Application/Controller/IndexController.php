@@ -16,11 +16,24 @@ use Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController {
 
     // agregamos este atributo
-    protected $nodeTable; 
+    protected $nodeTable;
 
     public function indexAction() {
         return new ViewModel(array(
             'noticias' => $this->getNodeTable()->getNoticiasFront(),
+        ));
+    }
+
+    public function nodeAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $node = $this->getNodeTable()->getNode($id);
+
+        return new ViewModel(array(
+            'node' => $node
         ));
     }
 
@@ -31,10 +44,6 @@ class IndexController extends AbstractActionController {
             $this->nodeTable = $sm->get('Smeagol\Model\NodeTable');
         }
         return $this->nodeTable;
-    }
-     public function holaAction()
-    {
-        return new ViewModel();
     }
 
 }
